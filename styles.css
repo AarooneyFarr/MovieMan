@@ -1,0 +1,49 @@
+.hero-col{
+    height:100vh;
+    
+    
+    
+    letter-spacing: 10px;
+    /* color: white; */
+    
+}
+
+.hero-container{
+    height:100vh;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-image: url(/images/weather.jpg); */
+}
+
+#HeroTitle{
+    font-size: 70px;
+    padding-bottom: 290px;
+    /* color: white; */
+    letter-spacing: 50px;
+}
+
+#HeroTitle, #HeroShrink{
+    transition: height 2s, padding-bottom 2s, font-size 2s, letter-spacing 2s;
+}
+
+.weather-card-div{
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+body{
+    text-transform: uppercase;
+    font-family: raleway,sans-serif;
+
+}
+
+h5{
+    font-weight: 900;
+}
+
+p{
+    font-size: 20px;
+}
+
