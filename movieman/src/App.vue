@@ -54,7 +54,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item d-flex">
               <a
-                class="btn btn-dark"
+                class="nav-link"
                 href="https://github.com/AarooneyFarr/MovieMan"
                 >Github Repo</a
               >
