@@ -20,7 +20,9 @@
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/about">About</router-link>
+              <router-link class="nav-link" to="/reviewed-movies"
+                >Reviews</router-link
+              >
             </li>
           </ul>
           <form class="d-flex">
@@ -78,6 +80,7 @@ export default {
   methods: {
     searchMovies(searchURL) {
       this.$root.$data.searched = true;
+      this.$router.push("/");
 
       const url = "http://www.omdbapi.com/?apikey=e5b65372" + "&s=" + searchURL;
       this.$root.$data.movies = [];

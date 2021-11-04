@@ -5,8 +5,10 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+
 let myData = {
   movies: [],
+  reviewedMovies: [],
   searched: false,
   movieQuery: "",
   searchedTerm: "",
