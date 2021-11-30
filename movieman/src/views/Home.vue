@@ -53,7 +53,7 @@
 import MovieList from "@/components/MovieList.vue";
 
 let getMoviePlot = async (movieId) => {
-  let url = "http://www.omdbapi.com/?apikey=e5b65372&i=" + movieId;
+  let url = "https://www.omdbapi.com/?apikey=e5b65372&i=" + movieId;
 
   let response = await fetch(url);
 
@@ -93,7 +93,7 @@ export default {
       this.$root.$data.searchedTerm = this.movieQuery;
 
       const url =
-        "http://www.omdbapi.com/?apikey=e5b65372" + "&s=" + this.movieQuery;
+        "https://www.omdbapi.com/?apikey=e5b65372" + "&s=" + this.movieQuery;
 
       fetch(url)
         .then((response) => {

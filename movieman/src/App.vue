@@ -68,7 +68,7 @@
 
 <script>
 let getMoviePlot = async (movieId) => {
-  let url = "http://www.omdbapi.com/?apikey=e5b65372&i=" + movieId;
+  let url = "https://www.omdbapi.com/?apikey=e5b65372&i=" + movieId;
 
   let response = await fetch(url);
 
@@ -99,7 +99,8 @@ export default {
       this.$root.$data.searched = true;
       this.$router.push("/");
 
-      const url = "http://www.omdbapi.com/?apikey=e5b65372" + "&s=" + searchURL;
+      const url =
+        "https://www.omdbapi.com/?apikey=e5b65372" + "&s=" + searchURL;
       this.$root.$data.movies = [];
 
       fetch(url)

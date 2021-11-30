@@ -18,8 +18,9 @@
           <star-rating
             @rating-selected="setRating"
             :show-rating="false"
+            v-model="rating"
           ></star-rating>
-          <a class="btn btn-dark m-3" @click.prevent="submitRating"
+          <a class="btn btn-dark m-3" @click.prevent="postRating"
             >SUBMIT RATING</a
           >
         </div>
@@ -31,6 +32,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
+import axios from "axios";
 
 export default {
   data() {
@@ -44,9 +46,13 @@ export default {
     StarRating,
   },
   created() {
-    this.movie = this.$root.$data.movies.find(
-      (pickedMovie) => pickedMovie.imdbID == this.$route.params.id
-    );
+    if (this.$route.params.newMovie) {
+      this.movie = this.$root.$data.movies.find(
+        (pickedMovie) => pickedMovie.imdbID == this.$route.params.id
+      );
+    } else {
+      this.getMovieInfo();
+    }
   },
   methods: {
     submitRating() {
@@ -64,6 +70,38 @@ export default {
       reviewed.reviewText = this.reviewText;
 
       this.$root.$data.reviewedMovies.push(reviewed);
+    },
+    async postRating() {
+      try {
+        let reviewed = {
+          imdbID: this.movie.imdbID,
+          img: this.movie.img,
+          plotText: this.movie.plotText,
+          rating: this.movie.rating,
+          reviewText: this.movie.reviewText,
+          title: this.movie.title,
+          url: this.movie.url,
+        };
+
+        reviewed.rating = this.rating;
+        reviewed.reviewText = this.reviewText;
+
+        console.log(reviewed);
+
+        await axios.post("/api/movies", reviewed);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getMovieInfo() {
+      try {
+        let response = await axios.get("/api/movie/" + this.$route.params.id);
+        this.movie = response.data;
+        this.rating = this.movie.rating;
+        this.reviewText = this.movie.reviewText;
+      } catch (error) {
+        console.log(error);
+      }
     },
     setRating(theRating) {
       this.rating = theRating;

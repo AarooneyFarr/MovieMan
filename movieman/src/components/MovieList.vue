@@ -30,7 +30,7 @@
                 class="btn btn-dark m-2"
                 :to="{
                   name: 'Movie',
-                  params: { id: movie.imdbID },
+                  params: { id: movie.imdbID, newMovie: false },
                 }"
                 >Rate Movie</router-link
               >
@@ -53,7 +53,7 @@
                 class="btn btn-dark m-2"
                 :to="{
                   name: 'Movie',
-                  params: { id: movie.imdbID },
+                  params: { id: movie.imdbID, newMovie: true },
                 }"
                 >Rate Movie</router-link
               >
