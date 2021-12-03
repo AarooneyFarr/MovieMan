@@ -57,7 +57,7 @@ app.get('/api/movie/:id', async (req, res) => {
 app.delete('/api/movie/:id', async (req, res) => {
     try {
         await Movie.deleteOne({
-            imdbId: req.params.id
+            imdbID: req.params.id
         });
         res.sendStatus(200);
     } catch (error) {
