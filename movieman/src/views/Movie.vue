@@ -20,10 +20,51 @@
             :show-rating="false"
             v-model="rating"
           ></star-rating>
-          <a class="btn btn-dark m-3" @click.prevent="postRating"
+          <a
+            id="submitButton"
+            class="btn btn-dark m-3"
+            @click.prevent="inDatabase ? addRating() : postRating()"
             >SUBMIT RATING</a
           >
         </div>
+      </div>
+    </div>
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col mx-5">
+        <div v-for="comment in comments" :key="comment._id">
+          <div class="container-fluid">
+            <div class="row">
+              <hr />
+              <div class="col-3">
+                <star-rating
+                  class="my-1"
+                  :show-rating="false"
+                  :read-only="true"
+                  :rating="comment.rating"
+                  :star-size="30"
+                ></star-rating>
+                <p>{{ comment.reviewText }}</p>
+              </div>
+              <div class="col-6"></div>
+              <div class="col-3">
+                <!-- TODO: Fix buttons -->
+                <!-- <a class="btn btn-dark mx-1" @click.prevent="editRating"
+                  >Edit</a
+                >
+                <a class="btn btn-dark mx-1" @click.prevent="postRating"
+                  >Delete</a
+                > -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col d-flex justify-content-center flex-column">
+        <a class="btn btn-dark m-4" @click.prevent="deleteMovie"
+          >Delete Movie</a
+        >
       </div>
     </div>
   </div>
@@ -40,6 +81,8 @@ export default {
       movie: {},
       reviewText: "",
       rating: 0,
+      comments: [],
+      inDatabase: false,
     };
   },
   components: {
@@ -55,32 +98,39 @@ export default {
     }
   },
   methods: {
-    submitRating() {
-      let reviewed = {
-        imdbID: this.movie.imdbID,
-        img: this.movie.img,
-        plotText: this.movie.plotText,
-        rating: this.movie.rating,
-        reviewText: this.movie.reviewText,
-        title: this.movie.title,
-        url: this.movie.url,
-      };
+    // submitRating() {
+    //   let reviewed = {
+    //     imdbID: this.movie.imdbID,
+    //     img: this.movie.img,
+    //     plotText: this.movie.plotText,
+    //     title: this.movie.title,
+    //     url: this.movie.url,
+    //   };
 
-      reviewed.rating = this.rating;
-      reviewed.reviewText = this.reviewText;
+    //   reviewed.rating = this.rating;
+    //   reviewed.reviewText = this.reviewText;
 
-      this.$root.$data.reviewedMovies.push(reviewed);
-    },
+    //   this.$root.$data.reviewedMovies.push(reviewed);
+    // },
     async postRating() {
+      document.getElementById("submitButton").innerText = "Submitted!";
+      document.getElementById("submitButton").classList.add("btn-success");
+      document.getElementById("submitButton").classList.remove("btn-dark");
+      setTimeout(function () {
+        document.getElementById("submitButton").innerText = "Submit Rating";
+        document.getElementById("submitButton").classList.add("btn-dark");
+        document.getElementById("submitButton").classList.remove("btn-success");
+      }, 2000);
+
       try {
         let reviewed = {
           imdbID: this.movie.imdbID,
           img: this.movie.img,
           plotText: this.movie.plotText,
-          rating: this.movie.rating,
-          reviewText: this.movie.reviewText,
           title: this.movie.title,
           url: this.movie.url,
+          rating: this.movie.rating,
+          reviewText: this.movie.reviewText,
         };
 
         reviewed.rating = this.rating;
@@ -88,7 +138,44 @@ export default {
 
         console.log(reviewed);
 
-        await axios.post("/api/movies", reviewed);
+        await axios.post("/api/movies/" + this.$route.params.id, reviewed);
+        this.reviewText = "";
+        this.rating = 0;
+        this.getMovieInfo();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async addRating() {
+      document.getElementById("submitButton").innerText = "Submitted!";
+      document.getElementById("submitButton").classList.add("btn-success");
+      document.getElementById("submitButton").classList.remove("btn-dark");
+      setTimeout(function () {
+        document.getElementById("submitButton").innerText = "Submit Rating";
+        document.getElementById("submitButton").classList.add("btn-dark");
+        document.getElementById("submitButton").classList.remove("btn-success");
+      }, 2000);
+
+      try {
+        let reviewed = {
+          imdbID: this.movie.imdbID,
+          img: this.movie.img,
+          plotText: this.movie.plotText,
+          title: this.movie.title,
+          url: this.movie.url,
+          rating: this.movie.rating,
+          reviewText: this.movie.reviewText,
+        };
+
+        reviewed.rating = this.rating;
+        reviewed.reviewText = this.reviewText;
+
+        console.log(reviewed);
+
+        await axios.put("/api/movies/" + this.$route.params.id, reviewed);
+        this.reviewText = "";
+        this.rating = 0;
+        this.getMovieInfo();
       } catch (error) {
         console.log(error);
       }
@@ -97,8 +184,25 @@ export default {
       try {
         let response = await axios.get("/api/movie/" + this.$route.params.id);
         this.movie = response.data;
-        this.rating = this.movie.rating;
-        this.reviewText = this.movie.reviewText;
+        // this.rating = this.movie.rating;
+
+        this.comments = this.movie.comments;
+        this.inDatabase = true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editRating() {
+      //TODO: Add edit functionality
+    },
+    async deleteRating() {
+      //TODO: Add delete comment PUT request
+    },
+    async deleteMovie() {
+      try {
+        await axios.delete("/api/movie/" + this.$route.params.id);
+        // this.getMovieInfo();
+        this.$router.push("/reviewed-movies");
       } catch (error) {
         console.log(error);
       }

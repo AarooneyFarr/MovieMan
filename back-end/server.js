@@ -16,10 +16,14 @@ const itemSchema = new mongoose.Schema({
     imdbID: String,
     img: String,
     plotText: String,
-    rating: Number,
-    reviewText: String,
     title: String,
     url: String,
+    avgRating: Number,
+    comments: [{
+
+        reviewText: String,
+        rating: Number,
+    }],
 });
 
 const Movie = mongoose.model('Movie', itemSchema);
@@ -36,7 +40,7 @@ app.get('/api/movies', async (req, res) => {
 });
 
 app.get('/api/movie/:id', async (req, res) => {
-    console.log(req.params.id);
+
     try {
         let movie = await Movie.find({
             imdbID: req.params.id
@@ -50,28 +54,77 @@ app.get('/api/movie/:id', async (req, res) => {
     }
 });
 
-app.post('/api/movies', async (req, res) => {
+app.delete('/api/movie/:id', async (req, res) => {
+    try {
+        await Movie.deleteOne({
+            imdbId: req.params.id
+        });
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+
+    }
+});
+
+app.post('/api/movies/:id', async (req, res) => {
 
 
-    const movie = new Movie({
+    const newMovie = new Movie({
         imdbID: req.body.imdbID,
         img: req.body.img,
         plotText: req.body.plotText,
-        rating: req.body.rating,
-        reviewText: req.body.reviewText,
         title: req.body.title,
         url: req.body.url,
+        avgRating: req.body.rating,
+        comments: [{
+            reviewText: req.body.reviewText,
+            rating: req.body.rating,
+        }]
     });
 
-
-
     try {
-        await movie.save();
-        res.send(movie);
+        let movie = await Movie.find({
+            imdbID: req.params.id
+        });
+
+        if (movie.length == 0) {
+            await newMovie.save();
+            res.send(movie);
+        }
+        else {
+            console.log("ERROR: movie already exists");
+        }
+
+
+
+
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
     }
+});
+
+app.put('/api/movies/:id', async (req, res) => {
+    let item = await Movie.findOne({ imdbID: req.params.id });
+
+    item.comments.push({
+        reviewText: req.body.reviewText,
+        rating: req.body.rating,
+    });
+
+    let sum = 0;
+    for (let i = 0; i < item.comments.length; i++) {
+        sum += item.comments[i].rating;
+
+    }
+
+
+    item.avgRating = (sum / item.comments.length);
+
+    item.save();
+    res.send(item);
+    console.log("PUT REQUEST SUCCESSFUL");
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

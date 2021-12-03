@@ -13,27 +13,26 @@
 
               <star-rating
                 class="m-2"
-                :rating="movie.rating"
+                :rating="movie.avgRating"
                 :show-rating="false"
                 :read-only="true"
                 :increment="0.5"
                 :star-size="42"
               ></star-rating>
 
-              <a
+              <!-- <a
                 class="btn btn-dark m-2"
                 :href="'https://www.imdb.com/title/' + movie.imdbID"
                 >MORE INFO</a
-              >
+              > -->
 
               <router-link
-                class="btn btn-dark m-2"
+                class="stretched-link"
                 :to="{
                   name: 'Movie',
                   params: { id: movie.imdbID, newMovie: false },
                 }"
-                >Rate Movie</router-link
-              >
+              ></router-link>
             </div>
           </div>
           <div v-else class="card movieCard w-75">
