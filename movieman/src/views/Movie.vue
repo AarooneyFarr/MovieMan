@@ -28,7 +28,7 @@
           rows="5"
         ></textarea>
         <div class="d-flex flex-row justify-content-between">
-          <div class="col-6">
+          <div class="col">
             <star-rating
               @rating-selected="setRating"
               :show-rating="false"
@@ -36,7 +36,7 @@
               v-model="rating"
             ></star-rating>
           </div>
-          <div class="col-6 d-flex justify-content-end">
+          <div class="col d-flex justify-content-end">
             <a
               id="submitButton"
               class="btn btn-dark m-3"
