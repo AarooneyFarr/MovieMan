@@ -169,10 +169,10 @@ export default {
 }
 
 #HeroTitle {
-  font-size: 70px;
+  font-size: 6vw;
   padding-bottom: 100px;
   /* color: white; */
-  letter-spacing: 50px;
+  letter-spacing: 2vw;
   font-family: raleway, sans-serif;
   text-transform: uppercase;
 }
