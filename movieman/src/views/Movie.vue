@@ -15,10 +15,9 @@
           </div>
           <div class="col">
             <h1>{{ movie.title }}</h1>
-
-            <p>{{ movie.plotText }}</p>
           </div>
         </div>
+        <p>{{ movie.plotText }}</p>
         <textarea
           class="my-1"
           v-model="reviewText"
