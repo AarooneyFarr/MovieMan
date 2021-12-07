@@ -170,7 +170,7 @@ export default {
 
 #HeroTitle {
   font-size: 6vw;
-  padding-bottom: 100px;
+  padding-bottom: 4vh;
   /* color: white; */
   letter-spacing: 2vw;
   font-family: raleway, sans-serif;

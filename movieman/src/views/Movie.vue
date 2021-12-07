@@ -1,13 +1,26 @@
 <template>
   <div class="container-fluid">
     <div class="row d-flex align-items-center justify-content-center">
-      <div class="col-6 text-center">
-        <img class="moviePic m-5" :src="movie.img" alt="" />
+      <div class="col text-center d-md-block d-none">
+        <img class="moviePic w-75 m-5" :src="movie.img" alt="" />
       </div>
       <div class="col d-flex justify-content-center flex-column">
-        <h1>{{ movie.title }}</h1>
-        <p>{{ movie.plotText }}</p>
+        <div class="row d-flex align-items-center justify-content-center">
+          <div class="col-4 d-block d-md-none">
+            <img
+              class="moviePic w-100 m-2 img-fluid d-inline-block"
+              :src="movie.img"
+              alt=""
+            />
+          </div>
+          <div class="col">
+            <h1>{{ movie.title }}</h1>
+
+            <p>{{ movie.plotText }}</p>
+          </div>
+        </div>
         <textarea
+          class="my-1"
           v-model="reviewText"
           name="reviewTextBox"
           id=""
@@ -15,17 +28,22 @@
           rows="5"
         ></textarea>
         <div class="d-flex flex-row justify-content-between">
-          <star-rating
-            @rating-selected="setRating"
-            :show-rating="false"
-            v-model="rating"
-          ></star-rating>
-          <a
-            id="submitButton"
-            class="btn btn-dark m-3"
-            @click.prevent="inDatabase ? addRating() : postRating()"
-            >SUBMIT RATING</a
-          >
+          <div class="col-6">
+            <star-rating
+              @rating-selected="setRating"
+              :show-rating="false"
+              :star-rating="40"
+              v-model="rating"
+            ></star-rating>
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            <a
+              id="submitButton"
+              class="btn btn-dark m-3"
+              @click.prevent="inDatabase ? addRating() : postRating()"
+              >SUBMIT RATING</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="row d-flex align-items-center justify-content-center">
+    <div class="row d-flex align-items-center justify-content-center d-none">
       <div class="col d-flex justify-content-center flex-column">
         <a class="btn btn-dark m-4" @click.prevent="deleteMovie"
           >Delete Movie</a
@@ -112,6 +130,7 @@ export default {
 
     //   this.$root.$data.reviewedMovies.push(reviewed);
     // },
+
     async postRating() {
       document.getElementById("submitButton").innerText = "Submitted!";
       document.getElementById("submitButton").classList.add("btn-success");
@@ -215,7 +234,8 @@ export default {
 </script>
 
 <style scoped>
-.moviePic {
+/* .moviePic {
   height: 70vh;
-}
+  width: 20vw;
+} */
 </style>

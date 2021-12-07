@@ -14,6 +14,8 @@ let myData = {
   searchedTerm: "",
 }
 
+
+
 new Vue({
   router,
   data: myData,
